@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tilt Privacy Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <style>
+    html, body {
+      margin:0; padding:0;
+      background: #fff;
+      height: 100%;
+      min-height: 100vh;
+      font-family: 'Inter', Arial, sans-serif;
+    }
+    body {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .content {
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: #222;
+      z-index: 1;
+      padding: 25px 17px;
+      text-align: center;
+    }
+    /* Шторка */
+    .privacy-fade {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      z-index: 99;
+      transition: opacity .22s;
+      opacity: 0;
+      /* Сначала прозрачная */
+      background: linear-gradient(to right, 
+        rgba(18,20,28,0.82) 0%, 
+        rgba(18,20,28,0.04) 25%, 
+        rgba(18,20,28,0) 50%, 
+        rgba(18,20,28,0.04) 75%,
+        rgba(18,20,28,0.82) 100%
+      );
+      /* Фоновый градиент по бокам, прозрачный по центру */
+    }
+    .privacy-fade.active {
+      opacity: 1;
+    }
+    .privacy-fade.left {
+      background: linear-gradient(to right, 
+        rgba(18,20,28,0.92) 0%, 
+        rgba(18,20,28,0.11) 24%, 
+        rgba(18,20,28,0) 47%, 
+        rgba(18,20,28,0.06) 80%,
+        rgba(18,20,28,0.01) 100%
+      );
+    }
+    .privacy-fade.right {
+      background: linear-gradient(to left, 
+        rgba(18,20,28,0.92) 0%, 
+        rgba(18,20,28,0.11) 24%, 
+        rgba(18,20,28,0) 47%, 
+        rgba(18,20,28,0.06) 80%,
+        rgba(18,20,28,0.01) 100%
+      );
+    }
+    .privacy-fade.both {
+      background: linear-gradient(to right, 
+        rgba(18,20,28,0.94) 0%, 
+        rgba(18,20,28,0.18) 18%, 
+        rgba(18,20,28,0) 48%, 
+        rgba(18,20,28,0.18) 82%,
+        rgba(18,20,28,0.94) 100%
+      );
+    }
+    .info {
+      color: #555;
+      margin-top: 40px;
+      font-size: 1.07em;
+      line-height: 1.5;
+      opacity: .7;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="content">
+    Tilt your phone left or right.<br>
+    <span style="font-size:.97em; font-weight:400;color:#888;">(Screen will darken on the sides — privacy anti-peeking effect)</span>
+  </div>
+  <div class="privacy-fade" id="privacy-fade"></div>
+  <div class="info">
+    <b>Tip:</b> Works only on real phones (in most browsers).<br>
+    Sometimes asks for "motion access" on iOS 13+.<br>
+    <span style="font-size:.98em;">Try tilting your device and see the effect.</span>
+  </div>
+  <script>
+    const fade = document.getElementById('privacy-fade');
+    // Для iOS нужно разрешение!
+    function askMotionPermission(){
+      if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
+        DeviceMotionEvent.requestPermission().catch(()=>{}).then(res=>{
+          window.addEventListener('deviceorientation', onTilt, true);
+        });
+      } else {
+        window.addEventListener('deviceorientation', onTilt, true);
+      }
+    }
+    // Слушаем наклон:
+    function onTilt(e){
+      // e.gamma: -90 (лево) ... 0 (ровно) ... +90 (право)
+      let g = e.gamma || 0;
+      // Чем сильнее наклон, тем сильнее затемнение по бокам
+      let abs = Math.abs(g);
+      fade.className = "privacy-fade";
+      if (abs < 7) {
+        fade.style.opacity = "0";
+      } else {
+        let maxDark = 0.95; // Максимальная непрозрачность шторки
+        let op = Math.min(maxDark, 0.22 + (abs-7)/33);
+        fade.style.opacity = op.toFixed(2);
+        if (g < -7)      fade.classList.add('left');
+        else if (g > 7)  fade.classList.add('right');
+        if (abs > 19)    fade.classList.add('both');
+      }
+    }
+    // Для iOS: показываем запрос разрешения
+    if (window.DeviceMotionEvent && typeof DeviceMotionEvent.requestPermission === 'function') {
+      document.body.addEventListener('click', askMotionPermission, {once:true});
+      document.querySelector('.content').innerHTML +=
+        "<div style='font-size:.96em;color:#b00;margin-top:18px;'>Tap anywhere to enable privacy effect</div>";
+    } else {
+      window.addEventListener('deviceorientation', onTilt, true);
+    }
+  </script>
+</body>
+</html>
