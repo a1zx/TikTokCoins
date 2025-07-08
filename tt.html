@@ -21,7 +21,7 @@
       background: #000; border-radius: 0;
       box-shadow: none; position: relative;
       display: flex; flex-direction: column; align-items: stretch;
-      padding-bottom: 80px; /* for fake scroll */
+      padding-bottom: 80px;
     }
     .header-row {
       padding: 22px 0 15px 0;
@@ -48,7 +48,6 @@
       font-size: 1.09em; opacity: 0.7; vertical-align: top; transition: opacity .13s;
     }
     .edit-name-btn:hover { opacity: 1; }
-    /* Main Card */
     .main-card {
       background: #19191d;
       border-radius: 15px;
@@ -108,7 +107,6 @@
       box-shadow: 0 1px 6px #29292d23;
       border: 1px solid #242426;
     }
-    /* Recharge */
     .recharge-section {
       background: #19191d;
       border-radius: 13px;
@@ -139,7 +137,6 @@
       display: inline-block;
     }
     .recharge-link:hover { color: #fe2c55; }
-    /* Services */
     .services-title {
       margin: 21px 20px 3px 20px;
       color: #fff; font-size: 1.07rem;
@@ -159,7 +156,6 @@
     .serv-icn {
       width: 22px; height: 22px; opacity: 0.86; vertical-align: middle;
     }
-    /* Modal / Overlay */
     .modal-bg {
       position: fixed; top:0;left:0;right:0;bottom:0;
       background: rgba(20,20,24,0.32);
@@ -204,6 +200,7 @@
       width: 100%; height: 5px; border-radius: 5px;
       background: linear-gradient(90deg,#fe2c55,#ffcb52 94%);
       appearance: none; outline: none; margin: 0; padding: 0;
+      touch-action: pan-x;
     }
     .modal-slider::-webkit-slider-thumb {
       -webkit-appearance: none;
@@ -235,7 +232,6 @@
       margin-top: 14px; letter-spacing: 0.03em;
     }
     .modal-confirm:active { opacity: 0.94; }
-    /* Edit name modal */
     .edit-name-modal {
       background: #18181c; border-radius: 13px;
       box-shadow: 0 2px 24px #27273c33;
@@ -295,7 +291,6 @@
         </span>
       </div>
     </div>
-
     <div class="recharge-section">
       <div class="recharge-info">
         <span class="recharge-title">First recharge package</span>
@@ -306,7 +301,6 @@
         <svg viewBox="0 0 24 24" fill="none"><rect x="4" y="10" width="16" height="8" rx="2" fill="#fff"/><rect x="2" y="8" width="20" height="10" rx="3" fill="#ff5c75"/><path d="M8 10V6.5A2.5 2.5 0 0 1 13 6.5V10M16 10V6.5A2.5 2.5 0 0 0 11 6.5V10" stroke="#fff" stroke-width="1.2"/></svg>
       </button>
     </div>
-
     <div class="services-title">Services</div>
     <div class="serv-row">
       <svg class="serv-icn" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="1.7"><rect x="4" y="6" width="16" height="12" rx="3"/><path d="M4 10h16"/></svg>
@@ -317,7 +311,6 @@
     <div id="modal-bg" class="modal-bg" style="display:none;"></div>
   </div>
   <script>
-    // Никнейм и модалка
     let nicknameSpan = document.getElementById('nickname');
     let modalBg = document.getElementById('modal-bg');
     let eurBalance = document.getElementById('eur-balance');
@@ -344,7 +337,6 @@
         modalBg.style.display = 'none';
       };
     }
-    // Модалка Get Coins с анимацией баланса
     document.getElementById('get-coins-btn').onclick = showCoinModal;
     function showCoinModal() {
       let coinsToAdd = 0, maxCoins = 100000, step = 50;
@@ -388,7 +380,7 @@
       };
     }
     function animateBalance(coins) {
-      let start = balance, end = balance + coins, duration = 3200; // Было 1200
+      let start = balance, end = balance + coins, duration = 3200;
       let step = Math.max(1, Math.ceil((end-start) / (duration/16)));
       let cur = start, t = 0;
       let animClass = "coin-balance-anim";
@@ -403,8 +395,12 @@
       balance = end;
       eurBalance.textContent = (balance * 0.015).toFixed(2);
     }
-    // Modal: prevent scroll
-    modalBg.addEventListener('touchmove', e=>{if(modalBg.style.display!=='none')e.preventDefault();},{passive:false});
+    // Touchmove fix for slider
+    modalBg.addEventListener('touchmove', function(e){
+      // Если свайп по ползунку — не блокируем!
+      if (e.target && e.target.classList && e.target.classList.contains('modal-slider')) return;
+      if(modalBg.style.display!=='none') e.preventDefault();
+    }, {passive:false});
     document.querySelector('.back-arrow').onclick = () => { alert('← Back pressed'); }
   </script>
 </body>
