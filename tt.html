@@ -2,85 +2,62 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=430, initial-scale=1">
-  <title>TikTok Dark Balance Clone</title>
+  <meta name="viewport" content="width=430, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>TikTok Balance Demo</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;900&display=swap" rel="stylesheet">
   <style>
     html, body {
-      height: 100%; margin: 0; padding: 0; background: #111114;
-      font-family: 'Inter', Arial, sans-serif;
+      margin: 0; padding: 0; height: 100%; min-height: 100vh;
+      background: #111114; font-family: 'Inter', Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      overflow-x: hidden;
     }
     body {
-      min-height: 100vh;
-      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; width: 100vw;
+      display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
     }
-    .iphone-x {
-      width: 393px; height: 852px;
-      background: #000;
-      border-radius: 46px;
-      box-shadow: 0 8px 60px #13151c50, 0 2px 0 #fff, 0 0 0 7px #24242a;
-      overflow: hidden;
-      position: relative;
-      display: flex; flex-direction: column;
-    }
-    .iphone-notch {
-      width: 99px; height: 22px; background: #1d1d21;
-      border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;
-      position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
-      z-index: 9;
-    }
-    .screen-inner { flex: 1; overflow-y: auto; margin-top: 38px; min-height: 100%; }
-    .status-bar {
-      height: 25px; color: #fff; font-size: 1.05em;
-      letter-spacing: 0.08em; display: flex; align-items: center;
-      justify-content: space-between;
-      padding: 0 22px 0 24px;
-      opacity: 0.95;
-      font-weight: 600;
+    .phone-container {
+      width: 100vw; max-width: 428px; min-height: 100vh;
+      background: #000; border-radius: 0;
+      box-shadow: none; position: relative;
+      display: flex; flex-direction: column; align-items: stretch;
+      padding-bottom: 80px; /* for fake scroll */
     }
     .header-row {
-      padding: 11px 0 13px 0;
-      font-weight: 700;
-      font-size: 1.22rem;
+      padding: 22px 0 15px 0;
+      font-weight: 800;
+      font-size: 1.23rem;
       color: #fff;
       display: flex; align-items: center; gap: 7px;
       position: relative; justify-content: flex-start;
     }
     .back-arrow {
-      font-size: 1.21rem;
+      font-size: 1.18rem;
       color: #fff;
       background: none; border: none; cursor: pointer;
-      margin-left: 18px; margin-right: 8px; font-weight: 700;
+      margin-left: 17px; margin-right: 8px; font-weight: 700;
       opacity: 0.96;
+      padding: 0 6px;
     }
     .header-title {
-      font-size: 1.17rem; font-weight: 800; letter-spacing: 0.01em; margin-top: 2px;
+      font-size: 1.15rem; font-weight: 800; letter-spacing: 0.01em;
       flex: 1 1 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
     }
     .edit-name-btn {
-      background: none; border: none; cursor: pointer; margin-right: 15px; padding: 4px 3px 0 4px;
-      font-size: 1.11em; opacity: 0.7; vertical-align: top;
-      transition: opacity .13s;
+      background: none; border: none; cursor: pointer; margin-right: 16px; padding: 4px 3px 0 4px;
+      font-size: 1.09em; opacity: 0.7; vertical-align: top; transition: opacity .13s;
     }
     .edit-name-btn:hover { opacity: 1; }
-    .currency-row {
-      display: flex; align-items: center; gap: 11px; margin-right: 20px;
-    }
-    .currency-icn {
-      color: #fff; font-size: 1.15em; font-weight: 700; opacity: 0.87;
-      background: none; border: none; cursor: pointer; padding: 0 2px;
-      margin-right: 0;
-    }
     /* Main Card */
     .main-card {
       background: #19191d;
-      border-radius: 13px;
-      margin: 0 11px 0 11px;
-      padding: 22px 18px 9px 18px;
-      display: flex; flex-direction: column; gap: 14px;
+      border-radius: 15px;
+      margin: 0 12px 0 12px;
+      padding: 23px 18px 12px 18px;
+      display: flex; flex-direction: column; gap: 11px;
       color: #fff;
       position: relative;
-      box-shadow: 0 3px 30px #09090917;
+      box-shadow: 0 3px 25px #09090914;
     }
     .coins-row {
       display: flex; align-items: flex-start; justify-content: space-between;
@@ -92,82 +69,51 @@
       display: flex; align-items: center; gap: 7px; font-size: 1.02em; color: #fff; opacity: 0.83; font-weight: 500; margin-bottom: 3px;
     }
     .coin-icon {
-      width: 19px; height: 19px;
-      vertical-align: middle; margin-right: 2px;
-      margin-bottom: 2px;
+      width: 19px; height: 19px; vertical-align: middle; margin-right: 2px; margin-bottom: 2px;
     }
     .coins-balance {
-      font-size: 2.15rem; font-weight: 900; color: #fff; letter-spacing: 0.01em;
-      font-family: inherit;
-      margin-right: 6px;
-      margin-bottom: 2px;
-      display: inline-block;
+      font-size: 2.12rem; font-weight: 900; color: #fff; letter-spacing: 0.01em;
+      font-family: inherit; margin-bottom: 2px; display: inline-block;
     }
     .get-coins-btn {
       background: none;
       color: #fff;
       border: none;
       font-weight: 800;
-      font-size: 1.03rem;
+      font-size: 1.02rem;
       letter-spacing: 0.01em;
       cursor: pointer;
       padding: 0;
       margin-top: 2px;
-      opacity: 0.92;
+      opacity: 0.93;
       display: flex; align-items: center; gap: 2px;
       transition: opacity .13s;
     }
     .get-coins-btn:hover { opacity: 1; text-decoration: underline; }
     .main-card hr {
-      border: none; border-top: 1.3px solid #33343b;
-      margin: 13px 0 9px 0;
+      border: none; border-top: 1.3px solid #29292e;
+      margin: 12px 0 7px 0;
     }
     .est-row {
       display: flex; align-items: center; justify-content: space-between; margin: 0 1px 0 1px;
     }
-    .est-label { color: #c5c5d0; font-size: 1.04em; font-weight: 500;}
-    .est-balance { color: #fff; font-weight: 900; font-size: 1.15em; letter-spacing: .02em;}
-    .est-view-btn {
-      background: none; color: #a7a7b2; border: none;
-      font-weight: 700; font-size: 1.07em; cursor: pointer; letter-spacing: 0.01em;
-      padding: 0; margin-left: 8px; opacity: 0.82; transition: opacity .13s;
+    .est-label { color: #c5c5d0; font-size: 1.05em; font-weight: 500;}
+    .est-balance {
+      display: flex; align-items: center; gap: 7px;
+      color: #fff; font-weight: 900; font-size: 1.17em; letter-spacing: .02em;
     }
-    .est-view-btn:hover { opacity: 1; text-decoration: underline;}
-    .tikmark {
-      position: absolute; right: 8px; bottom: 22px; opacity: 0.045; pointer-events: none;
-      width: 200px; z-index: 1;
-    }
-    /* Section Block */
-    .section {
+    .est-money-img {
+      width: 29px; height: 29px; margin-right: 2px; vertical-align: middle; object-fit: contain; border-radius: 7px;
       background: #19191d;
-      border-radius: 13px;
-      margin: 17px 11px 0 11px;
-      box-shadow: 0 1.5px 14px #05051612;
+      box-shadow: 0 1px 6px #29292d23;
+      border: 1px solid #242426;
     }
-    .section-header {
-      font-size: 1.15em; font-weight: 700; color: #fff;
-      padding: 17px 17px 0 17px; margin-bottom: 3px;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .section-viewall {
-      font-size: 1em; color: #b1b1c0; font-weight: 700; background: none; border: none;
-      cursor: pointer; opacity: 0.93; padding: 0;
-      transition: opacity .13s;
-    }
-    .section-viewall:hover { opacity: 1; text-decoration: underline; }
-    .section-body { padding: 0 0 7px 0; }
-    /* Transactions */
-    .trans-row {
-      padding: 0 19px 17px 19px; color: #b5b6be;
-      font-size: 1.07em;
-      font-weight: 500;
-    }
-    /* Recharge Card */
+    /* Recharge */
     .recharge-section {
       background: #19191d;
       border-radius: 13px;
-      margin: 15px 11px 0 11px;
-      padding: 16px 18px 15px 15px;
+      margin: 15px 12px 0 12px;
+      padding: 16px 18px 15px 14px;
       display: flex; align-items: center; gap: 14px; position: relative;
       box-shadow: 0 2px 14px #292a3120;
     }
@@ -180,10 +126,8 @@
       border-radius: 50%; font-weight: 900; font-size: 1.1rem;
       width: 46px; height: 46px; box-shadow: 0 1.7px 8px #fe2c5530;
       cursor: pointer; display: flex; align-items: center; justify-content: center;
-      margin-left: 7px; margin-right: 2px;
-      position: relative; z-index: 1;
-      transition: background .14s;
-      border: 2px solid #181818;
+      margin-left: 7px; margin-right: 2px; position: relative; z-index: 1;
+      transition: background .14s; border: 2px solid #181818;
     }
     .recharge-btn:active { background: #fe2c55;}
     .recharge-btn svg { width: 26px; height: 26px;}
@@ -195,27 +139,17 @@
       display: inline-block;
     }
     .recharge-link:hover { color: #fe2c55; }
-    /* Monetization */
-    .monet-row {
-      background: #23232b;
-      border-radius: 10px; color: #fff;
-      margin: 10px 12px 10px 12px;
-      padding: 17px 15px 13px 15px;
-      display: flex; align-items: center; justify-content: space-between;
-      font-weight: 700; font-size: 1.08em;
-      cursor: pointer; transition: background .13s;
-    }
-    .monet-row:hover { background: #1b1b21;}
-    .monet-icn {
-      margin-right: 12px; width: 22px; height: 22px;
-      opacity: 0.84; vertical-align: middle;
-    }
     /* Services */
+    .services-title {
+      margin: 21px 20px 3px 20px;
+      color: #fff; font-size: 1.07rem;
+      font-weight: 800; letter-spacing: 0.01em;
+    }
     .serv-row {
       background: #23232b;
-      border-radius: 10px;
+      border-radius: 11px;
       color: #fff;
-      margin: 8px 12px 12px 12px;
+      margin: 8px 12px 0 12px;
       padding: 18px 13px 13px 16px;
       display: flex; align-items: center; gap: 13px;
       font-weight: 700; font-size: 1.05em;
@@ -223,36 +157,85 @@
     }
     .serv-row:hover { background: #19191d;}
     .serv-icn {
-      width: 22px; height: 22px; opacity: 0.86;
-      vertical-align: middle;
+      width: 22px; height: 22px; opacity: 0.86; vertical-align: middle;
     }
     /* Modal / Overlay */
     .modal-bg {
       position: fixed; top:0;left:0;right:0;bottom:0;
-      background: rgba(52,52,58,0.17);
+      background: rgba(20,20,24,0.32);
       z-index: 100;
       display: flex; align-items: center; justify-content: center;
       animation: fadeIn .12s;
     }
     @keyframes fadeIn { from { opacity: 0;} to { opacity: 1;} }
     .modal-content {
-      background: #18181c; border-radius: 16px; min-width: 82vw; max-width: 330px;
-      padding: 27px 18px 21px 18px; position: relative;
-      box-shadow: 0 2px 28px #1b1b2940;
-      animation: pop .14s cubic-bezier(.77,-0.1,.59,1.13);
+      background: #18181c; border-radius: 17px; min-width: 83vw; max-width: 340px;
+      padding: 26px 16px 23px 16px; position: relative;
+      box-shadow: 0 2px 34px #22222d24;
+      animation: pop .16s cubic-bezier(.77,-0.1,.59,1.13);
       display: flex; flex-direction: column; align-items: center;
-      overflow: visible;
       color: #fff;
     }
     .modal-close {
-      position: absolute; top: 13px; right: 15px;
+      position: absolute; top: 14px; right: 16px;
       background: none; border: none;
-      font-size: 1.12rem; color: #ccc; cursor: pointer; font-weight: bold;
+      font-size: 1.13rem; color: #ccc; cursor: pointer; font-weight: bold;
     }
     .modal-title {
       font-size: 1.07rem; font-weight: 800; letter-spacing: .01em;
       color: #fff; margin-bottom: 13px; text-align: center;
     }
+    .coin-anim-stack {
+      display: flex; align-items: flex-end; gap: 3px; margin: 10px 0 6px 0; min-height: 30px;
+    }
+    .coin-anim-stack img {
+      width: 24px; height: 24px; box-shadow: 0 2px 12px #ffd60019;
+      border-radius: 50%; transform: translateY(0);
+      animation: drop .15s cubic-bezier(.58,1.2,.42,1.1);
+    }
+    @keyframes drop { from { transform: translateY(-20px) scale(1.17); opacity:0;} to { transform: translateY(0) scale(1); opacity:1;} }
+    .modal-slider-wrap {
+      width: 100%; margin: 7px 0 11px 0; display: flex; align-items: center; flex-direction: column; gap: 5px;
+    }
+    .modal-slider-row {
+      width: 100%; display: flex; align-items: center; justify-content: space-between; margin-bottom: 2px;
+    }
+    .modal-slider {
+      width: 100%; height: 5px; border-radius: 5px;
+      background: linear-gradient(90deg,#fe2c55,#ffcb52 94%);
+      appearance: none; outline: none; margin: 0; padding: 0;
+    }
+    .modal-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 17px; height: 17px; border-radius: 50%; background: #fff;
+      border: 2px solid #fe2c55; cursor: pointer; box-shadow: 0 2px 6px #fe2c5531; margin-top: -6px;
+    }
+    .modal-slider::-moz-range-thumb {
+      width: 17px; height: 17px; border-radius: 50%; background: #fff;
+      border: 2px solid #fe2c55; cursor: pointer; box-shadow: 0 2px 6px #fe2c5531;
+    }
+    .modal-slider::-ms-thumb {
+      width: 17px; height: 17px; border-radius: 50%; background: #fff;
+      border: 2px solid #fe2c55; cursor: pointer; box-shadow: 0 2px 6px #fe2c5531;
+    }
+    .modal-slider:focus { outline: none;}
+    .modal-slider-label {
+      background: #19191d; padding: 2.5px 11px 2.5px 11px; border-radius: 8px;
+      color: #fe2c55; font-size: 1.04rem; font-weight: 900; box-shadow: 0 1.2px 4px #fe2c5531;
+      margin-left: 7px; margin-top: 0;
+    }
+    .modal-confirm {
+      background: linear-gradient(90deg,#fe2c55 65%,#ff896e);
+      color: #fff; border: none;
+      width: 100%; font-size: 1.07rem;
+      padding: 12px 0; border-radius: 12px;
+      font-weight: 800; cursor: pointer;
+      box-shadow: 0 2px 8px #fe2c5511;
+      transition: background .13s;
+      margin-top: 14px; letter-spacing: 0.03em;
+    }
+    .modal-confirm:active { opacity: 0.94; }
+    /* Edit name modal */
     .edit-name-modal {
       background: #18181c; border-radius: 13px;
       box-shadow: 0 2px 24px #27273c33;
@@ -274,111 +257,72 @@
       margin-top: 0;
     }
     @keyframes pop { from { transform: scale(0.89);} to { transform: scale(1);} }
-    .coin-balance-anim { color: #ff5c75 !important; transition: color .19s; }
-    .tikmark { display: none; }
+    .coin-balance-anim { color: #ff5c75 !important; transition: color .17s; }
+    .footer-bg { width: 100vw; height: 600px; background: #000; }
     @media (max-width: 430px) {
-      .iphone-x { width: 100vw; height: 100vh; border-radius: 0; }
-      .screen-inner { margin-top: 37px; }
+      .phone-container { width: 100vw; max-width: 100vw; min-width: 0; }
     }
   </style>
 </head>
 <body>
-  <div class="iphone-x">
-    <div class="iphone-notch"></div>
-    <div class="screen-inner">
-      <div class="status-bar">
-        <span>12:28</span>
-        <span style="opacity:.93;">EUR</span>
-        <span style="font-size:1em;">
-          <svg width="26" height="12" style="vertical-align:middle;margin-right:2px;">
-            <rect x="2" y="2" width="16" height="8" rx="3" fill="#fff" stroke="#999" stroke-width="1"/>
-            <rect x="18" y="5" width="2" height="2" rx="1" fill="#fff" />
-            <rect x="4" y="3" width="12" height="6" rx="2" fill="#63d869"/>
-          </svg>
-          <span style="font-size:.97em;font-weight:700;vertical-align:middle;">73%</span>
-        </span>
-      </div>
-      <div class="header-row">
-        <button class="back-arrow" aria-label="Back">&larr;</button>
-        <span class="header-title" id="nickname">NadeProCS2’s balance</span>
-        <button class="edit-name-btn" id="edit-name-btn" aria-label="Edit name">
-          <svg width="19" height="19" viewBox="0 0 24 24"><path fill="#fff" d="M19.7 7.1c.4-.4.4-1 0-1.4l-1.4-1.4c-.4-.4-1-.4-1.4 0l-1.2 1.2 2.8 2.8 1.2-1.2zm-3.3 2.1l-9 9V21h2.8l9-9-2.8-2.8z"></path></svg>
-        </button>
-        <button class="currency-icn" title="Switch currency">&#8646; EUR</button>
-      </div>
-      <div class="main-card">
-        <div class="coins-row">
-          <div class="coins-block">
-            <div class="coin-title-row">
-              <img class="coin-icon" src="https://i.ibb.co/0RgSgLMG/tiktokcoin.webp" alt="coin">
-              Coins
-            </div>
-            <span class="coins-balance" id="balance-val">0</span>
+  <div class="phone-container">
+    <div class="header-row">
+      <button class="back-arrow" aria-label="Back">&larr;</button>
+      <span class="header-title" id="nickname">NadeProCS2’s balance</span>
+      <button class="edit-name-btn" id="edit-name-btn" aria-label="Edit name">
+        <svg width="19" height="19" viewBox="0 0 24 24"><path fill="#fff" d="M19.7 7.1c.4-.4.4-1 0-1.4l-1.4-1.4c-.4-.4-1-.4-1.4 0l-1.2 1.2 2.8 2.8 1.2-1.2zm-3.3 2.1l-9 9V21h2.8l9-9-2.8-2.8z"></path></svg>
+      </button>
+    </div>
+    <div class="main-card">
+      <div class="coins-row">
+        <div class="coins-block">
+          <div class="coin-title-row">
+            <img class="coin-icon" src="https://i.ibb.co/0RgSgLMG/tiktokcoin.webp" alt="coin">
+            Coins
           </div>
-          <button class="get-coins-btn" id="get-coins-btn">
-            Get Coins <span style="font-size:1.05em;">&#8250;</span>
-          </button>
+          <span class="coins-balance" id="balance-val">0</span>
         </div>
-        <hr>
-        <div class="est-row">
-          <span class="est-label">Estimated balance</span>
-          <span style="display:flex;align-items:center;">
-            <span style="font-size:1em;font-weight:900;letter-spacing:.02em;">EUR</span>
-            <span class="est-balance" style="margin-left:2px;">0.00</span>
-            <button class="est-view-btn">View &#8250;</button>
-          </span>
-        </div>
-        <img src="https://svgshare.com/i/163B.svg" class="tikmark" alt="bg-tiktok-mark">
-      </div>
-
-      <div class="section">
-        <div class="section-header">
-          Transactions
-          <button class="section-viewall">View all &#8250;</button>
-        </div>
-        <div class="section-body trans-row">
-          <!-- Пусто, как на скрине -->
-        </div>
-      </div>
-
-      <div class="recharge-section">
-        <div class="recharge-info">
-          <span class="recharge-title">First recharge package</span>
-          <span class="recharge-desc">Get Gifts and bonus Coins</span>
-          <button class="recharge-link" style="color:#ff5c75;font-size:1.01em;">Get &#8594;</button>
-        </div>
-        <button class="recharge-btn" aria-label="Gift">
-          <svg viewBox="0 0 24 24" fill="none"><rect x="4" y="10" width="16" height="8" rx="2" fill="#fff"/><rect x="2" y="8" width="20" height="10" rx="3" fill="#ff5c75"/><path d="M8 10V6.5A2.5 2.5 0 0 1 13 6.5V10M16 10V6.5A2.5 2.5 0 0 0 11 6.5V10" stroke="#fff" stroke-width="1.2"/></svg>
+        <button class="get-coins-btn" id="get-coins-btn">
+          Get Coins <span style="font-size:1.05em;">&#8250;</span>
         </button>
       </div>
-
-      <div style="margin:17px 0 0 0;font-size:1.09em;font-weight:800;color:#fff;padding:0 25px 0 24px;">
-        Monetization
-        <button class="section-viewall" style="float:right;margin-top:2px;font-size:1em;">View more &#8250;</button>
-      </div>
-      <div class="monet-row">
-        <span>
-          <svg class="monet-icn" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#fff" stroke-width="2"/><path d="M16 12c0-2.21-1.79-4-4-4s-4 1.79-4 4" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="2.5" fill="#fff"/></svg>
-          LIVE rewards
+      <hr>
+      <div class="est-row">
+        <span class="est-label">Estimated balance</span>
+        <span class="est-balance">
+          <img class="est-money-img" src="https://i.ibb.co/hF03CTCC/Money-Emojis.png" alt="money icon">
+          <span id="eur-balance">0.00</span>
         </span>
-        <span>&#8250;</span>
-      </div>
-
-      <div style="margin:19px 0 5px 0;font-size:1.09em;font-weight:800;color:#fff;padding:0 25px 0 24px;">
-        Services
-      </div>
-      <div class="serv-row">
-        <svg class="serv-icn" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="1.7"><rect x="4" y="6" width="16" height="12" rx="3"/><path d="M4 10h16"/></svg>
-        Help & feedback
-        <span style="margin-left:auto;">&#8250;</span>
       </div>
     </div>
+
+    <div class="recharge-section">
+      <div class="recharge-info">
+        <span class="recharge-title">First recharge package</span>
+        <span class="recharge-desc">Get Gifts and bonus Coins</span>
+        <button class="recharge-link" style="color:#ff5c75;font-size:1.01em;">Get &#8594;</button>
+      </div>
+      <button class="recharge-btn" aria-label="Gift">
+        <svg viewBox="0 0 24 24" fill="none"><rect x="4" y="10" width="16" height="8" rx="2" fill="#fff"/><rect x="2" y="8" width="20" height="10" rx="3" fill="#ff5c75"/><path d="M8 10V6.5A2.5 2.5 0 0 1 13 6.5V10M16 10V6.5A2.5 2.5 0 0 0 11 6.5V10" stroke="#fff" stroke-width="1.2"/></svg>
+      </button>
+    </div>
+
+    <div class="services-title">Services</div>
+    <div class="serv-row">
+      <svg class="serv-icn" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="1.7"><rect x="4" y="6" width="16" height="12" rx="3"/><path d="M4 10h16"/></svg>
+      Help & feedback
+      <span style="margin-left:auto;">&#8250;</span>
+    </div>
+    <div class="footer-bg"></div>
     <div id="modal-bg" class="modal-bg" style="display:none;"></div>
   </div>
   <script>
     // Никнейм и модалка
     let nicknameSpan = document.getElementById('nickname');
     let modalBg = document.getElementById('modal-bg');
+    let eurBalance = document.getElementById('eur-balance');
+    let balance = 0;
+    function formatNum(num) { return num.toLocaleString('en-US'); }
     document.getElementById('edit-name-btn').onclick = function() {
       modalBg.innerHTML = `
         <form class="edit-name-modal" onsubmit="return false;">
@@ -400,16 +344,68 @@
         modalBg.style.display = 'none';
       };
     }
+    // Модалка Get Coins с анимацией баланса
+    document.getElementById('get-coins-btn').onclick = showCoinModal;
+    function showCoinModal() {
+      let coinsToAdd = 0, maxCoins = 100000, step = 50;
+      modalBg.innerHTML = `
+        <div class="modal-content">
+          <button class="modal-close" aria-label="Close">&times;</button>
+          <div class="modal-title">Get more coins</div>
+          <div class="coin-anim-stack" id="coin-stack"></div>
+          <div class="modal-slider-wrap">
+            <div class="modal-slider-row">
+              <span style="color:#75768c;font-weight:700;font-size:1em;">Amount</span>
+              <span class="modal-slider-label" id="add-val">0</span>
+            </div>
+            <input type="range" min="0" max="${maxCoins}" value="0" step="${step}" id="coin-slider" class="modal-slider">
+          </div>
+          <button class="modal-confirm" id="confirm-coins" disabled>Confirm</button>
+        </div>
+      `;
+      modalBg.style.display = '';
+      function renderStack(val) {
+        let stack = document.getElementById('coin-stack');
+        stack.innerHTML = '';
+        let cnt = Math.min(Math.floor(val/step), 7);
+        for (let i = 0; i < cnt; i++) {
+          stack.innerHTML += `<img src="https://i.ibb.co/0RgSgLMG/tiktokcoin.webp" style="z-index:${10-i};margin-left:${i*3}px;margin-bottom:${i*1.7}px;">`;
+        }
+      }
+      document.getElementById('coin-slider').oninput = function() {
+        coinsToAdd = +this.value;
+        document.getElementById('add-val').textContent = coinsToAdd;
+        renderStack(coinsToAdd);
+        document.getElementById('confirm-coins').disabled = coinsToAdd === 0;
+      };
+      renderStack(0);
+      document.getElementById('confirm-coins').onclick = function() {
+        modalBg.style.display = 'none';
+        animateBalance(coinsToAdd);
+      };
+      modalBg.querySelector('.modal-close').onclick = function() {
+        modalBg.style.display = 'none';
+      };
+    }
+    function animateBalance(coins) {
+      let start = balance, end = balance + coins, duration = 3200; // Было 1200
+      let step = Math.max(1, Math.ceil((end-start) / (duration/16)));
+      let cur = start, t = 0;
+      let animClass = "coin-balance-anim";
+      let el = document.getElementById('balance-val');
+      el.classList.add(animClass);
+      let interval = setInterval(()=>{
+        t++; cur += step;
+        if ((step > 0 && cur >= end) || t > 250) { cur = end; clearInterval(interval); setTimeout(()=>{ el.classList.remove(animClass); },230);}
+        el.textContent = formatNum(cur);
+        eurBalance.textContent = (cur * 0.015).toFixed(2);
+      }, 19);
+      balance = end;
+      eurBalance.textContent = (balance * 0.015).toFixed(2);
+    }
+    // Modal: prevent scroll
     modalBg.addEventListener('touchmove', e=>{if(modalBg.style.display!=='none')e.preventDefault();},{passive:false});
     document.querySelector('.back-arrow').onclick = () => { alert('← Back pressed'); }
-    // Кнопка "Get Coins"
-    document.getElementById('get-coins-btn').onclick = function() {
-      alert('Open coins purchase page!');
-    }
-    // Recharge Link
-    document.querySelector('.recharge-link').onclick = function() {
-      alert('Open recharge page!');
-    }
   </script>
 </body>
 </html>
